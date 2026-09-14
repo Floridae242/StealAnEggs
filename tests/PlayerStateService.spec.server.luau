@@ -19,6 +19,7 @@ assert(containers.eggInventory:FindFirstChild("Common"), "Egg inventory must inc
 assert(containers.eggInventory:FindFirstChild("Rare"), "Egg inventory must include every rarity")
 assert(containers.eggInventory:FindFirstChild("Legendary"), "Egg inventory must include every rarity")
 assert(containers.petInventory.Parent == host, "Pet inventory must be parented to the session host")
+assert(PlayerStateService.getSessionContainers(host) ~= nil, "Complete session state must be discoverable")
 
 PlayerStateService.applyPersistentState(containers, {
 	score = 8,

@@ -34,6 +34,43 @@ function PlayerStateService.hasSessionContainers(parent: Instance): boolean
 		or parent:FindFirstChild("PetInventory") ~= nil
 end
 
+function PlayerStateService.getSessionContainers(parent: Instance): SessionContainers?
+	local stats = parent:FindFirstChild("leaderstats")
+	local eggInventory = parent:FindFirstChild("EggInventory")
+	local petInventory = parent:FindFirstChild("PetInventory")
+	if
+		not stats
+		or not stats:IsA("Folder")
+		or not eggInventory
+		or not eggInventory:IsA("Folder")
+		or not petInventory
+		or not petInventory:IsA("Folder")
+	then
+		return nil
+	end
+	local score = stats:FindFirstChild("Score")
+	local coins = stats:FindFirstChild("Coins")
+	local speed = stats:FindFirstChild("Speed")
+	if
+		not score
+		or not score:IsA("IntValue")
+		or not coins
+		or not coins:IsA("IntValue")
+		or not speed
+		or not speed:IsA("NumberValue")
+	then
+		return nil
+	end
+	return {
+		stats = stats,
+		score = score,
+		coins = coins,
+		speed = speed,
+		eggInventory = eggInventory,
+		petInventory = petInventory,
+	}
+end
+
 function PlayerStateService.createSessionContainers(
 	parent: Instance,
 	rarityNames: { string },
