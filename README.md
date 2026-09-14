@@ -50,8 +50,10 @@ Scores are session-only until `SAVE_LIFETIME_SCORE` is set to `true` in `Config.
 - `src/ReplicatedStorage/StealAnEggs/CreatureCatalog.luau` — original creature income and mutation multipliers.
 - `src/ServerScriptService/EggServer.server.luau` — gameplay and persistence bootstrap.
 - `src/ServerScriptService/Services/RemoteRegistry.luau` — server-only RemoteEvent registry that rejects conflicting classes.
+- `src/ServerScriptService/Services/PlayerStateService.luau` — creates per-player session containers once.
 - `src/StarterPlayer/StarterPlayerScripts/EggClient.client.luau` — UI and Q/drop input only.
 - `tests/EggCatalog.spec.server.luau` — Studio TestService contract test.
 - `tests/MapContract.spec.server.luau` — validates the version-controlled map contract.
 - `tests/RemoteRegistry.spec.server.luau` — validates remote reuse and fail-closed class checks.
+- `tests/PlayerStateService.spec.server.luau` — validates session container initialization and duplicate rejection.
 - `map/World.project.json` — original graybox world source.

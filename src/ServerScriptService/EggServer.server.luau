@@ -14,6 +14,7 @@ local Config = require(sharedFolder:WaitForChild("Config"))
 local EggCatalog = require(sharedFolder:WaitForChild("EggCatalog"))
 local CreatureCatalog = require(sharedFolder:WaitForChild("CreatureCatalog"))
 local RemoteRegistry = require(script.Parent:WaitForChild("Services"):WaitForChild("RemoteRegistry"))
+local PlayerStateService = require(script.Parent:WaitForChild("Services"):WaitForChild("PlayerStateService"))
 
 local gameMap = Workspace:WaitForChild("GameMap")
 local spawnFolder = gameMap:WaitForChild("EggSpawnPoints")
@@ -554,22 +555,15 @@ local function savePlayer(player: Player)
 end
 
 local function setupPlayer(player: Player)
+	if playerData[player] or PlayerStateService.hasSessionContainers(player) then
+		return
+	end
 	player:SetAttribute("CarryingEggId", nil)
 	player:SetAttribute("IsTraining", false)
-	local stats, score, coins, speed =
-		Instance.new("Folder"), Instance.new("IntValue"), Instance.new("IntValue"), Instance.new("NumberValue")
-	stats.Name, stats.Parent = "leaderstats", player
-	score.Name, score.Parent = "Score", stats
-	coins.Name, coins.Parent = "Coins", stats
-	speed.Name, speed.Value, speed.Parent = "Speed", Config.BASE_WALK_SPEED, stats
-	local eggInventory = Instance.new("Folder")
-	eggInventory.Name, eggInventory.Parent = "EggInventory", player
-	for _, rarityName in EggCatalog.getRarityNames() do
-		local count = Instance.new("IntValue")
-		count.Name, count.Parent = rarityName, eggInventory
-	end
-	local petInventory = Instance.new("Folder")
-	petInventory.Name, petInventory.Parent = "PetInventory", player
+	local containers =
+		PlayerStateService.createSessionContainers(player, EggCatalog.getRarityNames(), Config.BASE_WALK_SPEED)
+	local stats = containers.stats
+	local score = containers.score
 	playerData[player] = { loaded = not Config.SAVE_LIFETIME_SCORE, unsavedScore = 0 }
 	if Config.SAVE_LIFETIME_SCORE then
 		local store = assert(scoreStore, "Score DataStore must exist when persistence is enabled")

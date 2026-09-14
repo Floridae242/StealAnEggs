@@ -190,7 +190,7 @@ Rollback: map อยู่ใน commit แยกจาก services.
 
 ### M2 — แยก monolith เป็น Services/Controllers
 
-Progress (2026-09-07): เริ่มแยก bootstrap boundary แล้วด้วย `Services/RemoteRegistry.luau` และ `RemoteRegistrySpec`. `EggServer` ใช้ registry เดียวกันสำหรับ `RequestDrop`, `RequestHatch` และ `Feedback`; remote ที่มีชื่อซ้ำแต่ class ผิดจะ fail closed แทนการถูกแทนที่เงียบ ๆ. ยังไม่ได้ย้าย gameplay state หรือ controllers ออกจาก monolith.
+Progress (2026-09-14): เริ่มแยก bootstrap boundary แล้วด้วย `Services/RemoteRegistry.luau` และ `RemoteRegistrySpec`. `EggServer` ใช้ registry เดียวกันสำหรับ `RequestDrop`, `RequestHatch` และ `Feedback`; remote ที่มีชื่อซ้ำแต่ class ผิดจะ fail closed แทนการถูกแทนที่เงียบ ๆ. เพิ่ม `PlayerStateService` และ contract test เพื่อสร้าง leaderstats, egg inventory และ pet inventory เพียงครั้งเดียวต่อ session. ยังไม่ได้ย้าย gameplay state หรือ controllers ออกจาก monolith.
 
 Context: `EggServer.server.luau` ยาวกว่า 500 บรรทัดและดูแล remotes, state, movement, economy, data และ events พร้อมกัน.
 

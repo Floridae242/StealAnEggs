@@ -54,6 +54,9 @@
       "RemoteRegistrySpec": {
         "$path": "tests/RemoteRegistry.spec.server.luau"
       },
+      "PlayerStateServiceSpec": {
+        "$path": "tests/PlayerStateService.spec.server.luau"
+      },
       "EggCatalogSpec": {
         "$path": "tests/EggCatalog.spec.server.luau"
       },
