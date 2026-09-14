@@ -57,6 +57,9 @@
       "PlayerStateServiceSpec": {
         "$path": "tests/PlayerStateService.spec.server.luau"
       },
+      "DataServiceSpec": {
+        "$path": "tests/DataService.spec.server.luau"
+      },
       "EggCatalogSpec": {
         "$path": "tests/EggCatalog.spec.server.luau"
       },
