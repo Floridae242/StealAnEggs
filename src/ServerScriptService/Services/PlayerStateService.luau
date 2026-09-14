@@ -12,6 +12,20 @@ export type SessionContainers = {
 	petInventory: Folder,
 }
 
+export type PersistentCreature = {
+	id: string,
+	species: string,
+	mutation: string,
+}
+
+export type PersistentState = {
+	score: number,
+	coins: number,
+	speed: number,
+	eggInventory: { [string]: number },
+	creatures: { PersistentCreature },
+}
+
 local PlayerStateService = {}
 
 function PlayerStateService.hasSessionContainers(parent: Instance): boolean
@@ -64,6 +78,62 @@ function PlayerStateService.createSessionContainers(
 		speed = speed,
 		eggInventory = eggInventory,
 		petInventory = petInventory,
+	}
+end
+
+function PlayerStateService.applyPersistentState(containers: SessionContainers, state: PersistentState)
+	containers.score.Value = state.score
+	containers.coins.Value = state.coins
+	containers.speed.Value = state.speed
+
+	for rarityName, count in state.eggInventory do
+		local value = containers.eggInventory:FindFirstChild(rarityName)
+		if value and value:IsA("IntValue") then
+			value.Value = count
+		end
+	end
+
+	containers.petInventory:ClearAllChildren()
+	for _, creature in state.creatures do
+		local pet = Instance.new("StringValue")
+		pet.Name = creature.id
+		pet.Value = creature.species
+		pet:SetAttribute("Mutation", creature.mutation)
+		pet.Parent = containers.petInventory
+	end
+end
+
+function PlayerStateService.snapshotPersistentState(
+	containers: SessionContainers,
+	rarityNames: { string }
+): PersistentState
+	local eggInventory: { [string]: number } = {}
+	for _, rarityName in rarityNames do
+		local value = containers.eggInventory:FindFirstChild(rarityName)
+		eggInventory[rarityName] = if value and value:IsA("IntValue") then value.Value else 0
+	end
+
+	local creatures: { PersistentCreature } = {}
+	for _, pet in containers.petInventory:GetChildren() do
+		if pet:IsA("StringValue") then
+			local mutation = pet:GetAttribute("Mutation")
+			table.insert(creatures, {
+				id = pet.Name,
+				species = pet.Value,
+				mutation = if typeof(mutation) == "string" then mutation else "None",
+			})
+		end
+	end
+	table.sort(creatures, function(left, right)
+		return left.id < right.id
+	end)
+
+	return {
+		score = containers.score.Value,
+		coins = containers.coins.Value,
+		speed = containers.speed.Value,
+		eggInventory = eggInventory,
+		creatures = creatures,
 	}
 end
 
