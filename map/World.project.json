@@ -1,0 +1,1462 @@
+{
+  "name": "StealAnEggsWorld",
+  "tree": {
+    "$className": "Model",
+    "$properties": {
+      "Attributes": {
+        "MapVersion": {
+          "String": "M1-celestial-anime-v1"
+        }
+      }
+    },
+    "Floor": {
+      "$className": "Part",
+      "$properties": {
+        "Anchored": true,
+        "Position": [
+          0,
+          -1,
+          0
+        ],
+        "Size": [
+          450,
+          2,
+          450
+        ],
+        "Color": [
+          0.11,
+          0.12,
+          0.3
+        ],
+        "Material": "SmoothPlastic"
+      }
+    },
+    "CentralArena": {
+      "$className": "Part",
+      "$properties": {
+        "Anchored": true,
+        "Position": [
+          0,
+          0.25,
+          0
+        ],
+        "Size": [
+          130,
+          0.5,
+          130
+        ],
+        "Color": [
+          0.36,
+          0.24,
+          0.62
+        ],
+        "Material": "SmoothPlastic"
+      }
+    },
+    "BoundaryWalls": {
+      "$className": "Folder",
+      "North": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            0,
+            12,
+            224
+          ],
+          "Size": [
+            450,
+            24,
+            2
+          ],
+          "Color": [
+            0.13,
+            0.06,
+            0.25
+          ],
+          "Material": "Concrete"
+        }
+      },
+      "South": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            0,
+            12,
+            -224
+          ],
+          "Size": [
+            450,
+            24,
+            2
+          ],
+          "Color": [
+            0.13,
+            0.06,
+            0.25
+          ],
+          "Material": "Concrete"
+        }
+      },
+      "East": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            224,
+            12,
+            0
+          ],
+          "Size": [
+            2,
+            24,
+            450
+          ],
+          "Color": [
+            0.13,
+            0.06,
+            0.25
+          ],
+          "Material": "Concrete"
+        }
+      },
+      "West": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -224,
+            12,
+            0
+          ],
+          "Size": [
+            2,
+            24,
+            450
+          ],
+          "Color": [
+            0.13,
+            0.06,
+            0.25
+          ],
+          "Material": "Concrete"
+        }
+      },
+      "CoverNorth": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            0,
+            8,
+            -82
+          ],
+          "Size": [
+            70,
+            16,
+            5
+          ],
+          "Color": [
+            0.74,
+            0.16,
+            0.58
+          ],
+          "Material": "Concrete"
+        }
+      },
+      "CoverSouth": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            0,
+            8,
+            82
+          ],
+          "Size": [
+            70,
+            16,
+            5
+          ],
+          "Color": [
+            0.74,
+            0.16,
+            0.58
+          ],
+          "Material": "Concrete"
+        }
+      },
+      "CoverWest": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -82,
+            8,
+            0
+          ],
+          "Size": [
+            5,
+            16,
+            70
+          ],
+          "Color": [
+            0.74,
+            0.16,
+            0.58
+          ],
+          "Material": "Concrete"
+        }
+      },
+      "CoverEast": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            82,
+            8,
+            0
+          ],
+          "Size": [
+            5,
+            16,
+            70
+          ],
+          "Color": [
+            0.74,
+            0.16,
+            0.58
+          ],
+          "Material": "Concrete"
+        }
+      }
+    },
+    "EggSpawnPoints": {
+      "$className": "Folder",
+      "Spawn01": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -45,
+            2,
+            -35
+          ],
+          "Size": [
+            4,
+            1,
+            4
+          ],
+          "Color": [
+            1.0,
+            0.35,
+            0.75
+          ],
+          "CanCollide": false,
+          "Transparency": 0.2,
+          "Material": "Neon",
+          "Tags": [
+            "EggSpawnPoint"
+          ]
+        }
+      },
+      "Spawn02": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            0,
+            2,
+            -45
+          ],
+          "Size": [
+            4,
+            1,
+            4
+          ],
+          "Color": [
+            1.0,
+            0.35,
+            0.75
+          ],
+          "CanCollide": false,
+          "Transparency": 0.2,
+          "Material": "Neon",
+          "Tags": [
+            "EggSpawnPoint"
+          ]
+        }
+      },
+      "Spawn03": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            45,
+            2,
+            -35
+          ],
+          "Size": [
+            4,
+            1,
+            4
+          ],
+          "Color": [
+            1.0,
+            0.35,
+            0.75
+          ],
+          "CanCollide": false,
+          "Transparency": 0.2,
+          "Material": "Neon",
+          "Tags": [
+            "EggSpawnPoint"
+          ]
+        }
+      },
+      "Spawn04": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -45,
+            2,
+            35
+          ],
+          "Size": [
+            4,
+            1,
+            4
+          ],
+          "Color": [
+            1.0,
+            0.35,
+            0.75
+          ],
+          "CanCollide": false,
+          "Transparency": 0.2,
+          "Material": "Neon",
+          "Tags": [
+            "EggSpawnPoint"
+          ]
+        }
+      },
+      "Spawn05": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            0,
+            2,
+            45
+          ],
+          "Size": [
+            4,
+            1,
+            4
+          ],
+          "Color": [
+            1.0,
+            0.35,
+            0.75
+          ],
+          "CanCollide": false,
+          "Transparency": 0.2,
+          "Material": "Neon",
+          "Tags": [
+            "EggSpawnPoint"
+          ]
+        }
+      },
+      "Spawn06": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            45,
+            2,
+            35
+          ],
+          "Size": [
+            4,
+            1,
+            4
+          ],
+          "Color": [
+            1.0,
+            0.35,
+            0.75
+          ],
+          "CanCollide": false,
+          "Transparency": 0.2,
+          "Material": "Neon",
+          "Tags": [
+            "EggSpawnPoint"
+          ]
+        }
+      }
+    },
+    "EggDepositZones": {
+      "$className": "Folder",
+      "DepositA": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -165,
+            1,
+            -153
+          ],
+          "Size": [
+            26,
+            2,
+            12
+          ],
+          "Color": [
+            0.22,
+            0.92,
+            1.0
+          ],
+          "CanCollide": false,
+          "Transparency": 0.35,
+          "Material": "Neon",
+          "Tags": [
+            "EggDepositZone"
+          ],
+          "Attributes": {
+            "BaseId": {
+              "String": "A"
+            }
+          }
+        }
+      },
+      "DepositB": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -55,
+            1,
+            -153
+          ],
+          "Size": [
+            26,
+            2,
+            12
+          ],
+          "Color": [
+            0.22,
+            0.92,
+            1.0
+          ],
+          "CanCollide": false,
+          "Transparency": 0.35,
+          "Material": "Neon",
+          "Tags": [
+            "EggDepositZone"
+          ],
+          "Attributes": {
+            "BaseId": {
+              "String": "B"
+            }
+          }
+        }
+      },
+      "DepositC": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            55,
+            1,
+            -153
+          ],
+          "Size": [
+            26,
+            2,
+            12
+          ],
+          "Color": [
+            0.22,
+            0.92,
+            1.0
+          ],
+          "CanCollide": false,
+          "Transparency": 0.35,
+          "Material": "Neon",
+          "Tags": [
+            "EggDepositZone"
+          ],
+          "Attributes": {
+            "BaseId": {
+              "String": "C"
+            }
+          }
+        }
+      },
+      "DepositD": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            165,
+            1,
+            -153
+          ],
+          "Size": [
+            26,
+            2,
+            12
+          ],
+          "Color": [
+            0.22,
+            0.92,
+            1.0
+          ],
+          "CanCollide": false,
+          "Transparency": 0.35,
+          "Material": "Neon",
+          "Tags": [
+            "EggDepositZone"
+          ],
+          "Attributes": {
+            "BaseId": {
+              "String": "D"
+            }
+          }
+        }
+      },
+      "DepositE": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -165,
+            1,
+            153
+          ],
+          "Size": [
+            26,
+            2,
+            12
+          ],
+          "Color": [
+            0.22,
+            0.92,
+            1.0
+          ],
+          "CanCollide": false,
+          "Transparency": 0.35,
+          "Material": "Neon",
+          "Tags": [
+            "EggDepositZone"
+          ],
+          "Attributes": {
+            "BaseId": {
+              "String": "E"
+            }
+          }
+        }
+      },
+      "DepositF": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -55,
+            1,
+            153
+          ],
+          "Size": [
+            26,
+            2,
+            12
+          ],
+          "Color": [
+            0.22,
+            0.92,
+            1.0
+          ],
+          "CanCollide": false,
+          "Transparency": 0.35,
+          "Material": "Neon",
+          "Tags": [
+            "EggDepositZone"
+          ],
+          "Attributes": {
+            "BaseId": {
+              "String": "F"
+            }
+          }
+        }
+      },
+      "DepositG": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            55,
+            1,
+            153
+          ],
+          "Size": [
+            26,
+            2,
+            12
+          ],
+          "Color": [
+            0.22,
+            0.92,
+            1.0
+          ],
+          "CanCollide": false,
+          "Transparency": 0.35,
+          "Material": "Neon",
+          "Tags": [
+            "EggDepositZone"
+          ],
+          "Attributes": {
+            "BaseId": {
+              "String": "G"
+            }
+          }
+        }
+      },
+      "DepositH": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            165,
+            1,
+            153
+          ],
+          "Size": [
+            26,
+            2,
+            12
+          ],
+          "Color": [
+            0.22,
+            0.92,
+            1.0
+          ],
+          "CanCollide": false,
+          "Transparency": 0.35,
+          "Material": "Neon",
+          "Tags": [
+            "EggDepositZone"
+          ],
+          "Attributes": {
+            "BaseId": {
+              "String": "H"
+            }
+          }
+        }
+      }
+    },
+    "Treadmills": {
+      "$className": "Folder",
+      "Treadmill01": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -30,
+            0.5,
+            0
+          ],
+          "Size": [
+            14,
+            1,
+            26
+          ],
+          "Color": [
+            1.0,
+            0.64,
+            0.18
+          ],
+          "Material": "Neon",
+          "Tags": [
+            "TreadmillZone"
+          ]
+        }
+      },
+      "Treadmill02": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -10,
+            0.5,
+            0
+          ],
+          "Size": [
+            14,
+            1,
+            26
+          ],
+          "Color": [
+            1.0,
+            0.64,
+            0.18
+          ],
+          "Material": "Neon",
+          "Tags": [
+            "TreadmillZone"
+          ]
+        }
+      },
+      "Treadmill03": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            10,
+            0.5,
+            0
+          ],
+          "Size": [
+            14,
+            1,
+            26
+          ],
+          "Color": [
+            1.0,
+            0.64,
+            0.18
+          ],
+          "Material": "Neon",
+          "Tags": [
+            "TreadmillZone"
+          ]
+        }
+      },
+      "Treadmill04": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            30,
+            0.5,
+            0
+          ],
+          "Size": [
+            14,
+            1,
+            26
+          ],
+          "Color": [
+            1.0,
+            0.64,
+            0.18
+          ],
+          "Material": "Neon",
+          "Tags": [
+            "TreadmillZone"
+          ]
+        }
+      }
+    },
+    "PlayerBases": {
+      "$className": "Folder",
+      "BaseA": {
+        "$className": "Model",
+        "$properties": {
+          "Attributes": {
+            "BaseId": {
+              "String": "A"
+            }
+          }
+        },
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -165,
+              0,
+              -180
+            ],
+            "Size": [
+              50,
+              1,
+              44
+            ],
+            "Color": [
+              0.28,
+              0.3,
+              0.36
+            ],
+            "Material": "Concrete"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -165,
+              1,
+              -180
+            ],
+            "Size": [
+              8,
+              1,
+              8
+            ],
+            "Color": [
+              0.75,
+              0.8,
+              0.9
+            ],
+            "Neutral": true,
+            "Duration": 0
+          }
+        },
+        "HatchZone": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -165,
+              1,
+              -193
+            ],
+            "Size": [
+              18,
+              2,
+              10
+            ],
+            "Color": [
+              0.72,
+              0.35,
+              0.9
+            ],
+            "CanCollide": false,
+            "Transparency": 0.35,
+            "Material": "Neon",
+            "Tags": [
+              "EggHatchZone"
+            ],
+            "Attributes": {
+              "BaseId": {
+                "String": "A"
+              }
+            }
+          }
+        }
+      },
+      "BaseB": {
+        "$className": "Model",
+        "$properties": {
+          "Attributes": {
+            "BaseId": {
+              "String": "B"
+            }
+          }
+        },
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -55,
+              0,
+              -180
+            ],
+            "Size": [
+              50,
+              1,
+              44
+            ],
+            "Color": [
+              0.28,
+              0.3,
+              0.36
+            ],
+            "Material": "Concrete"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -55,
+              1,
+              -180
+            ],
+            "Size": [
+              8,
+              1,
+              8
+            ],
+            "Color": [
+              0.75,
+              0.8,
+              0.9
+            ],
+            "Neutral": true,
+            "Duration": 0
+          }
+        },
+        "HatchZone": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -55,
+              1,
+              -193
+            ],
+            "Size": [
+              18,
+              2,
+              10
+            ],
+            "Color": [
+              0.72,
+              0.35,
+              0.9
+            ],
+            "CanCollide": false,
+            "Transparency": 0.35,
+            "Material": "Neon",
+            "Tags": [
+              "EggHatchZone"
+            ],
+            "Attributes": {
+              "BaseId": {
+                "String": "B"
+              }
+            }
+          }
+        }
+      },
+      "BaseC": {
+        "$className": "Model",
+        "$properties": {
+          "Attributes": {
+            "BaseId": {
+              "String": "C"
+            }
+          }
+        },
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              55,
+              0,
+              -180
+            ],
+            "Size": [
+              50,
+              1,
+              44
+            ],
+            "Color": [
+              0.28,
+              0.3,
+              0.36
+            ],
+            "Material": "Concrete"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              55,
+              1,
+              -180
+            ],
+            "Size": [
+              8,
+              1,
+              8
+            ],
+            "Color": [
+              0.75,
+              0.8,
+              0.9
+            ],
+            "Neutral": true,
+            "Duration": 0
+          }
+        },
+        "HatchZone": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              55,
+              1,
+              -193
+            ],
+            "Size": [
+              18,
+              2,
+              10
+            ],
+            "Color": [
+              0.72,
+              0.35,
+              0.9
+            ],
+            "CanCollide": false,
+            "Transparency": 0.35,
+            "Material": "Neon",
+            "Tags": [
+              "EggHatchZone"
+            ],
+            "Attributes": {
+              "BaseId": {
+                "String": "C"
+              }
+            }
+          }
+        }
+      },
+      "BaseD": {
+        "$className": "Model",
+        "$properties": {
+          "Attributes": {
+            "BaseId": {
+              "String": "D"
+            }
+          }
+        },
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              165,
+              0,
+              -180
+            ],
+            "Size": [
+              50,
+              1,
+              44
+            ],
+            "Color": [
+              0.28,
+              0.3,
+              0.36
+            ],
+            "Material": "Concrete"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              165,
+              1,
+              -180
+            ],
+            "Size": [
+              8,
+              1,
+              8
+            ],
+            "Color": [
+              0.75,
+              0.8,
+              0.9
+            ],
+            "Neutral": true,
+            "Duration": 0
+          }
+        },
+        "HatchZone": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              165,
+              1,
+              -193
+            ],
+            "Size": [
+              18,
+              2,
+              10
+            ],
+            "Color": [
+              0.72,
+              0.35,
+              0.9
+            ],
+            "CanCollide": false,
+            "Transparency": 0.35,
+            "Material": "Neon",
+            "Tags": [
+              "EggHatchZone"
+            ],
+            "Attributes": {
+              "BaseId": {
+                "String": "D"
+              }
+            }
+          }
+        }
+      },
+      "BaseE": {
+        "$className": "Model",
+        "$properties": {
+          "Attributes": {
+            "BaseId": {
+              "String": "E"
+            }
+          }
+        },
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -165,
+              0,
+              180
+            ],
+            "Size": [
+              50,
+              1,
+              44
+            ],
+            "Color": [
+              0.28,
+              0.3,
+              0.36
+            ],
+            "Material": "Concrete"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -165,
+              1,
+              180
+            ],
+            "Size": [
+              8,
+              1,
+              8
+            ],
+            "Color": [
+              0.75,
+              0.8,
+              0.9
+            ],
+            "Neutral": true,
+            "Duration": 0
+          }
+        },
+        "HatchZone": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -165,
+              1,
+              193
+            ],
+            "Size": [
+              18,
+              2,
+              10
+            ],
+            "Color": [
+              0.72,
+              0.35,
+              0.9
+            ],
+            "CanCollide": false,
+            "Transparency": 0.35,
+            "Material": "Neon",
+            "Tags": [
+              "EggHatchZone"
+            ],
+            "Attributes": {
+              "BaseId": {
+                "String": "E"
+              }
+            }
+          }
+        }
+      },
+      "BaseF": {
+        "$className": "Model",
+        "$properties": {
+          "Attributes": {
+            "BaseId": {
+              "String": "F"
+            }
+          }
+        },
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -55,
+              0,
+              180
+            ],
+            "Size": [
+              50,
+              1,
+              44
+            ],
+            "Color": [
+              0.28,
+              0.3,
+              0.36
+            ],
+            "Material": "Concrete"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -55,
+              1,
+              180
+            ],
+            "Size": [
+              8,
+              1,
+              8
+            ],
+            "Color": [
+              0.75,
+              0.8,
+              0.9
+            ],
+            "Neutral": true,
+            "Duration": 0
+          }
+        },
+        "HatchZone": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              -55,
+              1,
+              193
+            ],
+            "Size": [
+              18,
+              2,
+              10
+            ],
+            "Color": [
+              0.72,
+              0.35,
+              0.9
+            ],
+            "CanCollide": false,
+            "Transparency": 0.35,
+            "Material": "Neon",
+            "Tags": [
+              "EggHatchZone"
+            ],
+            "Attributes": {
+              "BaseId": {
+                "String": "F"
+              }
+            }
+          }
+        }
+      },
+      "BaseG": {
+        "$className": "Model",
+        "$properties": {
+          "Attributes": {
+            "BaseId": {
+              "String": "G"
+            }
+          }
+        },
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              55,
+              0,
+              180
+            ],
+            "Size": [
+              50,
+              1,
+              44
+            ],
+            "Color": [
+              0.28,
+              0.3,
+              0.36
+            ],
+            "Material": "Concrete"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              55,
+              1,
+              180
+            ],
+            "Size": [
+              8,
+              1,
+              8
+            ],
+            "Color": [
+              0.75,
+              0.8,
+              0.9
+            ],
+            "Neutral": true,
+            "Duration": 0
+          }
+        },
+        "HatchZone": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              55,
+              1,
+              193
+            ],
+            "Size": [
+              18,
+              2,
+              10
+            ],
+            "Color": [
+              0.72,
+              0.35,
+              0.9
+            ],
+            "CanCollide": false,
+            "Transparency": 0.35,
+            "Material": "Neon",
+            "Tags": [
+              "EggHatchZone"
+            ],
+            "Attributes": {
+              "BaseId": {
+                "String": "G"
+              }
+            }
+          }
+        }
+      },
+      "BaseH": {
+        "$className": "Model",
+        "$properties": {
+          "Attributes": {
+            "BaseId": {
+              "String": "H"
+            }
+          }
+        },
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              165,
+              0,
+              180
+            ],
+            "Size": [
+              50,
+              1,
+              44
+            ],
+            "Color": [
+              0.28,
+              0.3,
+              0.36
+            ],
+            "Material": "Concrete"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              165,
+              1,
+              180
+            ],
+            "Size": [
+              8,
+              1,
+              8
+            ],
+            "Color": [
+              0.75,
+              0.8,
+              0.9
+            ],
+            "Neutral": true,
+            "Duration": 0
+          }
+        },
+        "HatchZone": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Position": [
+              165,
+              1,
+              193
+            ],
+            "Size": [
+              18,
+              2,
+              10
+            ],
+            "Color": [
+              0.72,
+              0.35,
+              0.9
+            ],
+            "CanCollide": false,
+            "Transparency": 0.35,
+            "Material": "Neon",
+            "Tags": [
+              "EggHatchZone"
+            ],
+            "Attributes": {
+              "BaseId": {
+                "String": "H"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

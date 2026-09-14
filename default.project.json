@@ -1,0 +1,65 @@
+{
+  "name": "StealAnEggs",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "GameMap": {
+        "$path": "map/World.project.json"
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Brightness": 2.5,
+        "ClockTime": 15.8,
+        "Ambient": [0.32, 0.25, 0.52],
+        "OutdoorAmbient": [0.22, 0.18, 0.36],
+        "ColorShift_Top": [0.08, 0.03, 0.12],
+        "ColorShift_Bottom": [0.02, 0.04, 0.12],
+        "EnvironmentDiffuseScale": 0.35,
+        "EnvironmentSpecularScale": 0.5
+      }
+    },
+    "ReplicatedStorage": {
+      "StealAnEggs": {
+        "$path": "src/ReplicatedStorage/StealAnEggs"
+      }
+    },
+    "ServerScriptService": {
+      "EggServer": {
+        "$path": "src/ServerScriptService/EggServer.server.luau"
+      },
+      "Services": {
+        "$path": "src/ServerScriptService/Services"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "EggClient": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/EggClient.client.luau"
+        }
+      }
+    },
+    "TestService": {
+      "$properties": {
+        "AutoRuns": true,
+        "ExecuteWithStudioRun": true,
+        "Timeout": 20
+      },
+      "MapContractSpec": {
+        "$path": "tests/MapContract.spec.server.luau"
+      },
+      "MapTravelTimeSpec": {
+        "$path": "tests/MapTravelTime.spec.server.luau"
+      },
+      "RemoteRegistrySpec": {
+        "$path": "tests/RemoteRegistry.spec.server.luau"
+      },
+      "EggCatalogSpec": {
+        "$path": "tests/EggCatalog.spec.server.luau"
+      },
+      "CreatureCatalogSpec": {
+        "$path": "tests/CreatureCatalog.spec.server.luau"
+      }
+    }
+  }
+}

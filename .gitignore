@@ -1,0 +1,14 @@
+# Generated Rojo builds
+/build/
+/sourcemap.json
+
+# Local editor and OS files
+.DS_Store
+.vscode/
+
+# Local Roblox place files are not source of truth
+/*.rbxl
+/*.rbxlx
+
+# Tool caches
+/.rokit/
