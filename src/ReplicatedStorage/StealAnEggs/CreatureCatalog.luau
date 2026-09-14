@@ -25,6 +25,14 @@ function CreatureCatalog.get(creatureName: string): Creature?
 	return creatures[creatureName]
 end
 
+function CreatureCatalog.isKnownCreature(creatureName: string): boolean
+	return creatures[creatureName] ~= nil
+end
+
+function CreatureCatalog.isKnownMutation(mutationName: string): boolean
+	return mutationMultipliers[mutationName] ~= nil
+end
+
 function CreatureCatalog.getMutationMultiplier(mutationName: string?): number
 	if not mutationName then
 		return 1
