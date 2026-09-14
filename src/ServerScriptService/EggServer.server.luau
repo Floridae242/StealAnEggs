@@ -8,6 +8,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 local DataStoreService = game:GetService("DataStoreService")
 local CollectionService = game:GetService("CollectionService")
+local HttpService = game:GetService("HttpService")
 
 local sharedFolder = ReplicatedStorage:WaitForChild("StealAnEggs")
 local Config = require(sharedFolder:WaitForChild("Config"))
@@ -15,6 +16,8 @@ local EggCatalog = require(sharedFolder:WaitForChild("EggCatalog"))
 local CreatureCatalog = require(sharedFolder:WaitForChild("CreatureCatalog"))
 local RemoteRegistry = require(script.Parent:WaitForChild("Services"):WaitForChild("RemoteRegistry"))
 local PlayerStateService = require(script.Parent:WaitForChild("Services"):WaitForChild("PlayerStateService"))
+local DataService = require(script.Parent:WaitForChild("Services"):WaitForChild("DataService"))
+local ProfileStoreService = require(script.Parent:WaitForChild("Services"):WaitForChild("ProfileStoreService"))
 
 local gameMap = Workspace:WaitForChild("GameMap")
 local spawnFolder = gameMap:WaitForChild("EggSpawnPoints")
@@ -32,7 +35,7 @@ remotesFolder.Parent = sharedFolder
 local requestDrop = RemoteRegistry.getOrCreate(remotesFolder, "RequestDrop")
 local requestHatch = RemoteRegistry.getOrCreate(remotesFolder, "RequestHatch")
 local feedback = RemoteRegistry.getOrCreate(remotesFolder, "Feedback")
-local scoreStore = if Config.SAVE_LIFETIME_SCORE then DataStoreService:GetDataStore(Config.DATASTORE_NAME) else nil
+local profileStore = if Config.SAVE_LIFETIME_SCORE then DataStoreService:GetDataStore(Config.DATASTORE_NAME) else nil
 
 type EggState = {
 	spawnPoint: BasePart,
@@ -43,7 +46,7 @@ type EggState = {
 	rarity: string,
 }
 
-type PlayerData = { loaded: boolean, unsavedScore: number }
+type PlayerData = { loaded: boolean, profile: DataService.Profile?, token: string? }
 type CarryTravel = {
 	pickupAt: number,
 	pickupPosition: Vector3,
@@ -72,6 +75,14 @@ local trainingState: { [Player]: TrainingState } = {}
 local isSaving: { [Player]: boolean } = {}
 local eggRandom = Random.new()
 local eggSerial = 0
+
+local profileValidationOptions = {
+	baseWalkSpeed = Config.BASE_WALK_SPEED,
+	maxWalkSpeed = Config.MAX_WALK_SPEED,
+	rarityNames = EggCatalog.getRarityNames(),
+	isKnownCreature = CreatureCatalog.isKnownCreature,
+	isKnownMutation = CreatureCatalog.isKnownMutation,
+}
 
 local function notify(player: Player, message: string)
 	feedback:FireClient(player, message)
@@ -294,9 +305,6 @@ local function awardEgg(player: Player, egg: BasePart)
 	end
 	score.Value += Config.SCORE_PER_EGG
 	coins.Value += rarity.depositCoins
-	if playerData[player] then
-		playerData[player].unsavedScore += Config.SCORE_PER_EGG
-	end
 	local spawnPoint = state.spawnPoint
 	clearCarrier(egg)
 	eggStates[egg] = nil
@@ -527,31 +535,55 @@ local function connectDepositZone(zone: BasePart)
 	end)
 end
 
-local function savePlayer(player: Player)
-	local store = scoreStore
+local function savePlayer(player: Player): boolean
+	local store = profileStore
 	if not Config.SAVE_LIFETIME_SCORE or not store then
-		return
+		return true
 	end
 	if isSaving[player] then
 		return
 	end
 	local data = playerData[player]
-	if not data or not data.loaded or data.unsavedScore <= 0 then
-		return
+	local containers = PlayerStateService.getSessionContainers(player)
+	if not data or not data.loaded or not data.profile or not data.token or not containers then
+		return false
 	end
 	isSaving[player] = true
-	local delta = data.unsavedScore
-	local ok, err = pcall(function()
-		store:UpdateAsync("Player_" .. player.UserId, function(oldValue)
-			return (tonumber(oldValue) or 0) + delta
-		end)
-	end)
-	if ok then
-		data.unsavedScore -= delta
+	local snapshot = PlayerStateService.snapshotPersistentState(containers, EggCatalog.getRarityNames())
+	local candidate = data.profile
+	candidate.score, candidate.coins, candidate.speed = snapshot.score, snapshot.coins, snapshot.speed
+	candidate.eggInventory, candidate.creatures = snapshot.eggInventory, snapshot.creatures
+	local saved, err = ProfileStoreService.save(
+		store,
+		"Player_" .. player.UserId,
+		data.token,
+		os.time(),
+		Config.PERSISTENCE_LEASE_SECONDS,
+		data.profile.revision,
+		candidate,
+		profileValidationOptions
+	)
+	if saved then
+		data.profile = saved.profile
+		isSaving[player] = nil
+		return true
 	else
 		warn("Could not save score for", player.Name, err)
 	end
 	isSaving[player] = nil
+	return false
+end
+
+local function releasePlayerProfile(player: Player)
+	local data = playerData[player]
+	if not Config.SAVE_LIFETIME_SCORE or not profileStore or not data or not data.loaded or not data.token then
+		return
+	end
+	local released, err =
+		ProfileStoreService.release(profileStore, "Player_" .. player.UserId, data.token, profileValidationOptions)
+	if not released then
+		warn("Could not release profile for", player.Name, err)
+	end
 end
 
 local function setupPlayer(player: Player)
@@ -563,18 +595,24 @@ local function setupPlayer(player: Player)
 	local containers =
 		PlayerStateService.createSessionContainers(player, EggCatalog.getRarityNames(), Config.BASE_WALK_SPEED)
 	local stats = containers.stats
-	local score = containers.score
-	playerData[player] = { loaded = not Config.SAVE_LIFETIME_SCORE, unsavedScore = 0 }
+	playerData[player] = { loaded = not Config.SAVE_LIFETIME_SCORE, profile = nil, token = nil }
 	if Config.SAVE_LIFETIME_SCORE then
-		local store = assert(scoreStore, "Score DataStore must exist when persistence is enabled")
-		local ok, saved = pcall(function()
-			return store:GetAsync("Player_" .. player.UserId)
-		end)
-		if ok then
-			score.Value = typeof(saved) == "number" and saved or 0
+		local store = assert(profileStore, "Profile DataStore must exist when persistence is enabled")
+		local token = HttpService:GenerateGUID(false)
+		local claimed, err = ProfileStoreService.claim(
+			store,
+			"Player_" .. player.UserId,
+			token,
+			os.time(),
+			Config.PERSISTENCE_LEASE_SECONDS,
+			profileValidationOptions
+		)
+		if claimed then
+			PlayerStateService.applyPersistentState(containers, claimed.profile)
+			playerData[player] = { loaded = true, profile = claimed.profile, token = token }
 			playerData[player].loaded = true
 		else
-			warn("Could not load", player.Name, saved)
+			warn("Could not load", player.Name, err)
 		end
 	end
 	local function onCharacter(character: Model)
@@ -655,12 +693,16 @@ Players.PlayerRemoving:Connect(function(player)
 	if egg then
 		resetEgg(egg)
 	end
-	savePlayer(player)
+	if savePlayer(player) then
+		releasePlayerProfile(player)
+	end
 	playerData[player], carriedEgg[player], carryTravel[player], lastActionAt[player], lastDropAt[player], lastDepositAt[player], lastHatchAt[player], trainingCoinRemainder[player], passiveCoinRemainder[player], trainingState[player], isSaving[player] =
 		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
 end)
 game:BindToClose(function()
 	for _, player in Players:GetPlayers() do
-		savePlayer(player)
+		if savePlayer(player) then
+			releasePlayerProfile(player)
+		end
 	end
 end)
