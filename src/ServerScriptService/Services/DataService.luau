@@ -37,7 +37,7 @@ local MAX_UPGRADE_LEVEL = 100
 local DataService = {}
 
 local function nonNegativeInteger(value: unknown, maximum: number): number?
-	if typeof(value) ~= "number" or value < 0 or value % 1 ~= 0 or value > maximum then
+	if typeof(value) ~= "number" or value ~= value or value < 0 or value % 1 ~= 0 or value > maximum then
 		return nil
 	end
 	return value
@@ -76,7 +76,7 @@ local function validateV1(raw: { [string]: unknown }, options: ValidationOptions
 	if not revision or not score or not coins then
 		return nil, "Profile currency or revision is invalid"
 	end
-	if typeof(speed) ~= "number" or speed < options.baseWalkSpeed or speed > options.maxWalkSpeed then
+	if typeof(speed) ~= "number" or speed ~= speed or speed < options.baseWalkSpeed or speed > options.maxWalkSpeed then
 		return nil, "Profile speed is invalid"
 	end
 
@@ -100,12 +100,20 @@ local function validateV1(raw: { [string]: unknown }, options: ValidationOptions
 	end
 
 	local rawCreatures = raw.creatures
-	if typeof(rawCreatures) ~= "table" or #rawCreatures > MAX_CREATURES then
+	if typeof(rawCreatures) ~= "table" then
 		return nil, "Profile creature inventory is invalid"
 	end
 	local creatures: { CreatureRecord } = {}
 	local creatureIds: { [string]: boolean } = {}
-	for _, rawCreature in ipairs(rawCreatures) do
+	local creatureCount = 0
+	for index, rawCreature in rawCreatures do
+		if typeof(index) ~= "number" or index < 1 or index % 1 ~= 0 then
+			return nil, "Profile creature inventory must be a sequential array"
+		end
+		creatureCount += 1
+		if creatureCount > MAX_CREATURES then
+			return nil, "Profile creature inventory is too large"
+		end
 		if typeof(rawCreature) ~= "table" then
 			return nil, "Profile creature record is invalid"
 		end
@@ -124,7 +132,12 @@ local function validateV1(raw: { [string]: unknown }, options: ValidationOptions
 			return nil, "Profile creature record has an invalid ID, species, or mutation"
 		end
 		creatureIds[id] = true
-		table.insert(creatures, { id = id, species = species, mutation = mutation })
+		creatures[index] = { id = id, species = species, mutation = mutation }
+	end
+	for index = 1, creatureCount do
+		if not creatures[index] then
+			return nil, "Profile creature inventory must be a sequential array"
+		end
 	end
 
 	local rawUpgrades = raw.upgrades
@@ -135,6 +148,11 @@ local function validateV1(raw: { [string]: unknown }, options: ValidationOptions
 	local storage = nonNegativeInteger(rawUpgrades.storage, MAX_UPGRADE_LEVEL)
 	if not treadmill or not storage then
 		return nil, "Profile upgrades contain an invalid level"
+	end
+	for upgradeName in rawUpgrades do
+		if upgradeName ~= "treadmill" and upgradeName ~= "storage" then
+			return nil, "Profile upgrades contain an unknown upgrade"
+		end
 	end
 
 	return {
@@ -152,6 +170,15 @@ end
 function DataService.loadAndValidate(raw: unknown, options: ValidationOptions): (Profile?, string?)
 	if raw == nil then
 		return DataService.createDefault(options), nil
+	end
+	if typeof(raw) == "number" then
+		local score = nonNegativeInteger(raw, MAX_CURRENCY)
+		if not score then
+			return nil, "Legacy profile score is invalid"
+		end
+		local migrated = DataService.createDefault(options)
+		migrated.score = score
+		return migrated, nil
 	end
 	if typeof(raw) ~= "table" then
 		return nil, "Profile payload must be a table"

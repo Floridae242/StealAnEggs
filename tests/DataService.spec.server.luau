@@ -25,6 +25,13 @@ local migrated, migrationError = DataService.loadAndValidate({ schemaVersion = 0
 assert(migrated and not migrationError, "Legacy score data must migrate")
 assert(migrated.score == 12 and migrated.coins == 0, "Migration must retain legacy score only")
 
+local numericLegacy, numericLegacyError = DataService.loadAndValidate(18, options)
+assert(numericLegacy and not numericLegacyError, "Legacy numeric score data must migrate")
+assert(numericLegacy.score == 18, "Numeric migration must retain the prior score")
+
+local invalidLegacy, invalidLegacyError = DataService.loadAndValidate(-1, options)
+assert(invalidLegacy == nil and invalidLegacyError, "Invalid numeric legacy score data must be rejected")
+
 local valid, validError = DataService.loadAndValidate({
 	schemaVersion = 1,
 	revision = 3,
@@ -64,5 +71,32 @@ local duplicateId, duplicateIdError = DataService.loadAndValidate({
 	upgrades = { treadmill = 0, storage = 0 },
 }, options)
 assert(duplicateId == nil and duplicateIdError, "Duplicate creature IDs must be rejected")
+
+local sparseCreatures, sparseCreaturesError = DataService.loadAndValidate({
+	schemaVersion = 1,
+	revision = 0,
+	score = 0,
+	coins = 0,
+	speed = 16,
+	eggInventory = { Common = 0, Rare = 0, Legendary = 0 },
+	creatures = {
+		[1] = { id = "pet_001", species = "Chick", mutation = "None" },
+		[3] = { id = "pet_003", species = "Bunny", mutation = "None" },
+	},
+	upgrades = { treadmill = 0, storage = 0 },
+}, options)
+assert(sparseCreatures == nil and sparseCreaturesError, "Sparse creature inventories must be rejected")
+
+local unknownUpgrade, unknownUpgradeError = DataService.loadAndValidate({
+	schemaVersion = 1,
+	revision = 0,
+	score = 0,
+	coins = 0,
+	speed = 16,
+	eggInventory = { Common = 0, Rare = 0, Legendary = 0 },
+	creatures = {},
+	upgrades = { treadmill = 0, storage = 0, hidden = 1 },
+}, options)
+assert(unknownUpgrade == nil and unknownUpgradeError, "Unknown upgrades must be rejected")
 
 print("DataServiceSpec passed")
