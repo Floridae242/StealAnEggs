@@ -60,6 +60,9 @@
       "DataServiceSpec": {
         "$path": "tests/DataService.spec.server.luau"
       },
+      "ProfileStoreServiceSpec": {
+        "$path": "tests/ProfileStoreService.spec.server.luau"
+      },
       "EggCatalogSpec": {
         "$path": "tests/EggCatalog.spec.server.luau"
       },
